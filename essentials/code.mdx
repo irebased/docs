@@ -4,12 +4,35 @@ description: 'Display inline code and code blocks'
 icon: 'code'
 ---
 
-## Inline code
+## How it works
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+Genericized text will first collect character frequencies of your text.
 
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+FFFFFRRRROOOMMS
+
+F = 5
+R = 4
+O = 3
+M = 2
+S = 1
+```
+
+It will then associate the most frequent character with the letter A, the next most frequent character with the letter B, so on and so forth.
+
+```
+F = A
+R = B
+O = C
+M = D
+S = E
+```
+
+Finally, it will replace the characters accordingly in your ciphertext to now be the genericized text.
+
+```
+FFFFFRRRROOOMMS
+AAAAABBBBCCCDDE
 ```
 
 ## Code blocks

@@ -1,0 +1,68 @@
+---
+title: 'Genericized Text'
+description: 'Genericized text is used to compare multiple ciphertexts in terms of their character frequencies rather than their unique characters.'
+icon: 'code'
+---
+
+## How it works
+
+<Steps>
+    <Step title="Frequency calculation">
+        Genericized text will first collect character frequencies of your text.
+
+        ```
+        FFFFFRRRROOOMMS
+
+        F = 5
+        R = 4
+        O = 3
+        M = 2
+        S = 1
+        ```
+    </Step>
+    <Step title="Character association">
+        It will then associate the most frequent character with the letter A, the next most frequent character with the letter B, so on and so forth.
+
+        ```
+        F = A
+        R = B
+        O = C
+        M = D
+        S = E
+        ```
+    </Step>
+    <Step title="Character replacement">
+        Finally, it will replace the characters accordingly in your ciphertext to now be the genericized text.
+
+        ```
+        FFFFFRRRROOOMMS
+        AAAAABBBBCCCDDE
+        ```
+    </Step>
+</Steps>
+
+## Interactions
+
+<Info>
+  The genericized text will only be computed after any ciphertext updates are saved.
+</Info>
+
+The genericized text will dynamically change based on the other options set on the ciphertext:
+- Ignore whitespace
+- Ignore casing
+- Ignore punctuation
+- Reverse text
+
+## Practical Application
+
+This can be useful when evaluating if two pieces of text with different characters share the same unique character distribution.
+
+## Caveats
+
+One major caveat is that this is only practical with an alphabet size of roughly 62, but ideally no more than 26.
+The reason is because we quickly run out of intuitive symbols to use. It is recommended to limit usage of genericized text to:
+- Hexadecimal
+- Decimal
+- Octal
+- Base64
+- UTF-8, ASCII, UTF-16, and UTF-32 strings which are limited to a unique character set between 1 and 62.

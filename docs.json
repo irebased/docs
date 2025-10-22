@@ -22,6 +22,12 @@
             ]
           },
           {
+            "group": "Ciphertexts",
+            "pages": [
+              "ciphertext/genericized"
+            ]
+          },
+          {
             "group": "Customization",
             "pages": [
               "essentials/settings",
