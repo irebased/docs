@@ -1,0 +1,9 @@
+export const SettingsPreStep = ({ settingName }) => (
+  <div>
+    <p>
+        For all <a href="/ciphertext/encoding#Data encodings">data encodings</a>, the data is first decoded to a <code>Uint8Array</code> and then converted to
+        a string, thus producing a Latin-1 (ISO/IEC 8859-1) string (8-bit "extended" <a href="https://www.sciencebuddies.org/science-fair-projects/references/ascii-table" target="_blank">ASCII table</a>). This
+        step takes place before the {settingName} setting is applied.
+    </p>
+  </div>
+);

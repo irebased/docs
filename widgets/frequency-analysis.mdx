@@ -1,0 +1,94 @@
+---
+title: 'Frequency Analysis'
+description: 'Frequency Analysis is the practice of evaluating n-gram frequencies across a text.'
+icon: 'chart-bar'
+---
+
+import DataEncodingDecodeSnippet from '/snippets/data-encoding-decode-step.mdx'
+import DisplayEncodingSnippet from '/snippets/display-encoding-snippet.mdx'
+
+
+## How it works
+
+<Steps>
+    <Step title="Encoding">
+        Frequency analysis will be different based on the character encoding of your input.
+
+        <DataEncodingDecodeSnippet />
+        <DisplayEncodingSnippet />
+    </Step>
+    <Step title="Ciphertext Settings">
+        Frequency analysis takes into consideration the settings for each ciphertext. These settings currently include:
+        - Ignore whitespace
+        - Ignore punctuation
+        - Ignore casing
+        - Genericize text
+
+        For data encodings (base64, hex, octal, decimal, etc.) the ciphertext is first decoded to Latin-1 before
+        the toggles are applied.
+    </Step>
+    <Step title="Frequency Calculations">
+        After all of the above steps are performed, the frequency calculations are executed and displayed.
+    </Step>
+</Steps>
+
+## Frequency Analysis Settings
+
+### N-grams and sliding window vs. block analysis
+
+Frequency analysis can be performed on n-grams where `n >= 1`. For n-grams > 1, it is important
+to understand the difference between sliding window and block analysis.
+
+#### Sliding window
+Sliding window analysis "slides" across the ciphertext to create n-grams. For the text `Hello`:
+```
+He: 1
+el: 1
+ll: 1
+lo: 1
+```
+
+Notice that characters at a given index will appear at least twice for n > 1.
+
+#### Block analysis
+Block analysis evaluates your n-grams as non-overlapping chunks. For `Hello`:
+```
+He: 1
+ll: 1
+```
+Notice that the final character, `o`, is not present. When using block analysis,
+beware of missing data. The ciphertext length (_after all toggles are applied_)
+must be divisible by your n-gram size for all characters to be represented in the
+frequency analysis!
+
+### Graph vs. Table
+
+There are two display options for Frequency Analysis.
+
+#### Graph
+Shows a bar chart, where each bar is an n-gram that exists in the ciphertext(s). The height
+represents the number of occurrences of the n-gram.
+
+#### Table
+Shows a table of values. For ciphertexts with many unique characters, or comparing many ciphertexts,
+this may be a better option.
+
+### Sort
+
+Sorting works by picking a ciphertext to sort by. You can pick an ascending or descending sort order
+for the selected ciphertext. All other ciphertexts being presented will be graphed wherever they end up
+along the dictated sort order.
+
+## Practical Application
+
+Frequency analysis can be leveraged to:
+- Exploit monoalphabetic substitution, or simple transposition.
+- Determine if two or more ciphertexts follow similar character distribution.
+- Compare n-gram frequencies to the expected frequency distribution of a given language
+
+## Caveats
+
+- Frequency analysis typically requires a sufficiently long ciphertext to be effective.
+- Polyalphabetic ciphers are typically sufficient at avoiding detection via frequency analysis.
+- Plaintexts designed to skew the frequency results, such as lipograms, can mislead analysis.
+- Non-standard alphabets and compressed data may result in less effective analysis.
