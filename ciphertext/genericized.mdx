@@ -41,6 +41,15 @@ icon: 'code'
     </Step>
 </Steps>
 
+### Display vs. non-display formats
+
+CipherInspector supports many character encodings. Some are considered "display" formats,
+such as UTF-8, ASCII, UTF-16, and UTF-32. Others are used to store bytes of data, such as
+hexadecimal, binary, octal, decimal, and base64.
+
+For display formats, the genericized text is calculated by counting each *character*. For
+non-display formats, the genericized text is calculated by counting each *byte*.
+
 ## Interactions
 
 <Info>
