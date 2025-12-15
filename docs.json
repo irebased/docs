@@ -28,7 +28,8 @@
               "ciphertext/ignore-whitespace",
               "ciphertext/ignore-casing",
               "ciphertext/genericized",
-              "ciphertext/color"
+              "ciphertext/color",
+              "ciphertext/nickname"
             ]
           },
           {
