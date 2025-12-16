@@ -35,7 +35,8 @@
           {
             "group": "Widgets",
             "pages": [
-              "widgets/frequency-analysis"
+              "widgets/frequency-analysis",
+              "widgets/index-of-coincidence"
             ]
           }
         ]

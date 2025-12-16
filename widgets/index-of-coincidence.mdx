@@ -1,0 +1,146 @@
+---
+title: 'Index of Coincidence'
+description: 'Index of coincidence calculates the probability of two randomly chosen letters from a text being the same.'
+icon: 'chart-bar'
+---
+
+import DataEncodingDecodeSnippet from '/snippets/data-encoding-decode-step.mdx'
+import DisplayEncodingSnippet from '/snippets/display-encoding-snippet.mdx'
+
+
+## How it works
+
+<Steps>
+    <Step title="Encoding">
+        Index of coincidence (abbreviated as "IC") will be different based on the character encoding of your input.
+
+        <DataEncodingDecodeSnippet />
+        <DisplayEncodingSnippet />
+    </Step>
+    <Step title="Ciphertext Settings">
+        IC takes into consideration the settings for each ciphertext. These settings currently include:
+        - Ignore whitespace
+        - Ignore punctuation
+        - Ignore casing
+        - Genericize text
+
+        For data encodings (base64, hex, octal, decimal, etc.) the ciphertext is first decoded to Latin-1 before
+        the toggles are applied.
+    </Step>
+    <Step title="IC Calculations">
+        After all of the above steps are performed, the IC calculations are executed and displayed.
+
+        ## IC formula
+
+        This widget uses the following formula for calculating index of coincidence:
+
+        ```
+        IC = (Σ(n_i × (n_i - 1))) / (N × (N - 1))
+        ```
+
+        Where:
+        - `n_i` = frequency of n-gram i (or character i when n-gram size = 1)
+        - `N` = total number of n-grams (or characters)
+        - `Σ` = sum over all unique n-grams/characters
+
+        ### Periodic IC formula
+
+        Periodic IC is different based on the mode.
+
+        #### N-gram mode: Block
+
+        For this mode, the process is:
+
+        1. Generate n-grams from the entire text
+        2. Group n-grams by their index modulo the period:
+        ```
+        Group_k = {ngram_i where i % p = k} for k = 0, 1, ..., p-1
+        ```
+        3. Calculate IC for each group using the basic IC formula
+        4. Average the IC values across all groups:
+        ```
+        IC(p) = (1/p) × Σ(IC(Group_k)) for k = 0 to p-1
+        ```
+
+        #### N-gram mode: Sliding window
+
+        For this mode, the process is:
+
+        1. Slide a window of size ngramSize across the text
+        2. For each window:
+            - Generate n-grams within the window
+            - Group by index modulo period (same as block mode)
+            - Calculate and average group ICs
+        3. Average the window ICs:
+        ```
+        IC(p) = (1/num_windows) × Σ(IC_window) for all windows
+        ```
+
+
+    </Step>
+</Steps>
+
+## Index of Coincidence Settings
+
+### N-grams and sliding window vs. block analysis
+
+IC can be performed on n-grams where `n >= 1`. For n-grams > 1, it is important
+to understand the difference between sliding window and block analysis.
+
+#### N-gram mode: Sliding window
+Sliding window analysis "slides" across the ciphertext to create n-grams. For the text `Hello`:
+```
+He: 1
+el: 1
+ll: 1
+lo: 1
+```
+
+Notice that characters at a given index will appear at least twice for n > 1.
+
+#### N-gram mode: Block analysis
+Block analysis evaluates your n-grams as non-overlapping chunks. For `Hello`:
+```
+He: 1
+ll: 1
+```
+Notice that the final character, `o`, is not present. When using block analysis,
+beware of missing data. The ciphertext length (_after all toggles are applied_)
+must be divisible by your n-gram size for all characters to be represented in the
+IC!
+
+### Graph vs. Table
+
+There are two display options for IC.
+
+#### Graph (Periodic analysis)
+Shows a line chart, where each line is the periodic IC of a ciphertext. The height
+represents the IC, and the horizontal axis represents how far into the ciphertext the
+measurement is.
+
+#### Table
+Shows a table of values, with a single IC value for each ciphertext. This is the IC for the
+entire ciphertext.
+
+### Max Period
+
+The max period is used in the graph to determine how far the x-axis will go. This helps with
+scaling the data in case characters are of varying lengths.
+
+#### Show Average Lines
+
+In the periodic analysis graph, shows a dotted line for each ciphertext indicating the average line.
+
+## Practical Application
+
+IC can be leveraged to:
+- Determine if a cipher is periodic or aperiodic.
+- Discover key lengths of periodic ciphers, such as Vigenere with a repeat key.
+- Compare the periods of two or more ciphers.
+
+## Caveats
+
+- Noisy results may mislead you.
+- Autokey is a sufficient way to get rid of periodic spikes in IC.
+- Coincidences in sufficiently short text may also mislead you.
+- Some languages have similar IC patterns. If you don't know the language of the plaintext, you may be misled.
