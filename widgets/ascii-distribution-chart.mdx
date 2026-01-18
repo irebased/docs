@@ -1,0 +1,63 @@
+---
+title: 'ASCII Distribution Chart'
+description: 'ASCII distribution shows how distributed the bytes are in terms of their 0-255 range.'
+icon: 'chart-bar'
+---
+
+import DataEncodingDecodeSnippet from '/snippets/data-encoding-decode-step.mdx'
+import DisplayEncodingSnippet from '/snippets/display-encoding-snippet.mdx'
+
+
+## How it works
+
+<Steps>
+    <Step title="Decoding">
+        The ASCII distribution chart will use decoded ciphertext content for charting the underlying bytes of data.
+        UTF-8, UTF-16, and UTF-32 will be converted to a byte array, and the bytes will be evaluated.
+    </Step>
+    <Step title="Ciphertext Settings">
+        ASCII distribution takes into consideration the settings for each ciphertext. These settings currently include:
+        - Ignore whitespace
+        - Ignore punctuation
+        - Ignore casing
+        - Genericize text
+
+        This works by decoding the ciphertext and using the number that the byte represents for each byte in the sequence.
+    </Step>
+    <Step title="Frequency Calculations">
+        After all of the above steps are performed, the frequency calculations are executed and mapped to the distribution chart.
+    </Step>
+</Steps>
+
+## ASCII Distribution Settings
+
+### Display range
+
+The following options are given to adjust the display range of the chart. This can help focus on the relevant parts of the chart:
+
+- ASCII: range of 0-127. This is the standard ASCII table.
+- Extended (Default): 0-255. This is the "extended" ASCII table (latin1).
+- Input range: only displays data starting from the lowest charted byte and ending at the highest charted byte.
+
+### Count vs. Percentage
+
+The y-axis can be toggled to use either a count or a percentage measurement.
+
+#### Count
+
+The count option will chart the byte frequencies in terms of raw count, and how many times they appear in the ciphertext.
+
+#### Percentage
+
+The percentage option will chart the byte frequencies in terms of raw count divided by total byte count.
+
+## Practical Application
+
+ASCII distribution analysis can be leveraged to:
+- Discover if a given stream of bytes has been shifted up or down along the ASCII table.
+- Determine if two or more ciphertexts follow similar character distribution.
+
+## Caveats
+
+- Use of this tool with UTF-8, UTF-16, and UTF-32 will produce mixed results, as these
+encodings do not use single bytes to represent characters.
