@@ -2,5 +2,5 @@
 ---
 
 For all <a href="/ciphertext/encoding#Data encodings">data encodings</a>, the data is first decoded to a `Uint8Array` and then converted to
-a string, thus producing a Latin-1 (ISO/IEC 8859-1) string (8-bit "extended" <a href="https://www.sciencebuddies.org/science-fair-projects/references/ascii-table" target="_blank">ASCII table</a>). This
-step takes precedence over any other ciphertext settings.
+a string based on its encoding type (ASCII, Latin1, UTF-8, UTF-16, UTF-32). This step takes precedence over any other ciphertext settings,
+unless the widget evaluates the ciphertext bytes rather than the encoded text data.
