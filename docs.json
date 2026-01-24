@@ -33,11 +33,17 @@
             ]
           },
           {
-            "group": "Widgets",
+            "group": "Analysis Widgets",
             "pages": [
               "widgets/frequency-analysis",
               "widgets/index-of-coincidence",
               "widgets/ascii-distribution-chart",
+              "widgets/shannon-entropy"
+            ]
+          },
+          {
+            "group": "Formatting Widgets",
+            "pages": [
               "widgets/title"
             ]
           }

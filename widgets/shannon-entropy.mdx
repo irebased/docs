@@ -1,0 +1,119 @@
+---
+title: 'Shannon Entropy'
+description: 'Shannon entropy is a measurement of the randomness of text.'
+icon: 'shuffle'
+---
+
+import DataEncodingDecodeSnippet from '/snippets/data-encoding-decode-step.mdx'
+import DisplayEncodingSnippet from '/snippets/display-encoding-snippet.mdx'
+
+
+## How it works
+
+<Steps>
+    <Step title="Encoding">
+        Shannon Entropy will be different based on the character encoding of your input.
+
+        <DataEncodingDecodeSnippet />
+        <DisplayEncodingSnippet />
+    </Step>
+    <Step title="Ciphertext Settings">
+        Shannon Entropy takes into consideration the settings for each ciphertext. These settings currently include:
+        - Ignore whitespace
+        - Ignore punctuation
+        - Ignore casing
+        - Genericize text
+
+        For data encodings (base64, hex, octal, decimal, etc.) the ciphertext is first decoded to Latin-1 before
+        the toggles are applied.
+    </Step>
+    <Step title="Shannon Entropy calculations">
+        After all of the above steps are performed, the Shannon entropy calculations are executed and displayed.
+
+        ## Shannon Entropy formula
+
+        This widget uses the following formula for calculating shannon entropy:
+
+        ```
+        H = -Σ p(x) * log₂(p(x))
+        ```
+        [Read more](https://www.numberanalytics.com/blog/shannon-entropy-demystified-calculation-guide).
+
+        ### Periodic Shannon Entropy formula
+
+        Periodic Shannon Entropy is different based on the mode.
+
+        #### N-gram mode: Block
+
+        For this mode, the process is:
+
+        1. Generate n-grams from the entire text.
+        2. Group n-grams based on the "sample rate" setting, where sample rate is the number of n-grams in the entropy calculation.
+        3. Calculate Shannon Entropy for each group using the basic Shannon Entropy formula.
+
+        #### N-gram mode: Sliding window
+
+        For this mode, the process is:
+
+        1. Slide a window of size ngramSize across the text and generate n-grams. This will contain overlapping n-grams.
+        2. Follow steps 2 and 3 above.
+    </Step>
+</Steps>
+
+## Shannon Entropy Settings
+
+### N-grams and sliding window vs. block analysis
+
+Shannon Entropy can be performed on n-grams where `n >= 1`. For n-grams > 1, it is important
+to understand the difference between sliding window and block analysis.
+
+#### N-gram mode: Sliding window
+Sliding window analysis "slides" across the ciphertext to create n-grams. For the text `Hello`:
+```
+He: 1
+el: 1
+ll: 1
+lo: 1
+```
+
+Notice that characters at a given index will appear at least twice for n > 1.
+
+#### N-gram mode: Block analysis
+Block analysis evaluates your n-grams as non-overlapping chunks. For `Hello`:
+```
+He: 1
+ll: 1
+```
+Notice that the final character, `o`, is not present. When using block analysis,
+beware of missing data. The ciphertext length (_after all toggles are applied_)
+must be divisible by your n-gram size for all characters to be represented in the
+Shannon Entropy!
+
+### Periodic entropy vs. Table
+
+There are two display options for Shannon Entropy.
+
+#### Periodic entropy (graph)
+Shows a line chart, where each line is the periodic Shannon entropy of a ciphertext. The height
+represents the entropy, and the horizontal axis represents how far into the ciphertext the
+measurement is.
+
+#### Table
+Shows a table of values, with a single entropy value for each ciphertext. This is the entropy for the
+entire ciphertext.
+
+### Sample rate
+
+The sample rate is used for the periodic analysis to determine how many n-grams to sample when calculating entropy. Generally,
+a sample rate > 16 is recommended to start seeing patterns emerge.
+
+## Practical Application
+
+Shannon entropy can be leveraged to:
+- Determine how close a ciphertext is to being random.
+- See if a ciphertext is relatively close to English.
+
+## Caveats
+
+- Short text may not be sufficient in measuring entropy.
+- This measurement only tells one part of the story. Combine with other tools to get a full picture.
