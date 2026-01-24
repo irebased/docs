@@ -37,7 +37,8 @@
             "pages": [
               "widgets/frequency-analysis",
               "widgets/index-of-coincidence",
-              "widgets/ascii-distribution-chart"
+              "widgets/ascii-distribution-chart",
+              "widgets/title"
             ]
           }
         ]
