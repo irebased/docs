@@ -7,7 +7,7 @@
     "light": "#3B82F6",
     "dark": "#3B82F6"
   },
-  "favicon": "/artemis_logo.PNG",
+  "favicon": "/logo/CipherInspector.png",
   "navigation": {
     "tabs": [
       {
@@ -61,8 +61,8 @@
     }
   },
   "logo": {
-    "light": "/logo/artemis_logo.PNG",
-    "dark": "/logo/artemis_logo.PNG"
+    "light": "/logo/CipherInspectorNavLogoLight.png",
+    "dark": "/logo/CipherInspectorNavLogo.png"
   },
   "navbar": {
     "links": [
