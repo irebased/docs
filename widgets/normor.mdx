@@ -1,0 +1,141 @@
+---
+title: 'Normor'
+description: 'Normor measures how closely a ciphertext letter frequency order matches the standard English letter frequency order.'
+icon: 'crown'
+---
+
+  import DataEncodingDecodeSnippet from '/snippets/data-encoding-decode-step.mdx'
+  import DisplayEncodingSnippet from '/snippets/display-encoding-snippet.mdx'
+
+
+  ## How it works
+
+  <Steps>
+      <Step title="Encoding">
+          Normor analyzes letter frequencies, so the character encoding of your input affects which characters are available for analysis.
+
+          <DataEncodingDecodeSnippet />
+          <DisplayEncodingSnippet />
+      </Step>
+      <Step title="Ciphertext Settings">
+          Normor takes into consideration the settings for each ciphertext. These settings currently include:
+          - Ignore whitespace
+          - Ignore punctuation
+          - Ignore casing
+          - Genericize text
+
+          For data encodings (base64, hex, octal, decimal, etc.) the ciphertext is first decoded to Latin-1 before
+          the toggles are applied.
+      </Step>
+      <Step title="Filter to Letters Only">
+          After preprocessing, the text is filtered to keep only alphabetic characters (A-Z). All other characters—numbers,
+          symbols, spaces, and extended characters—are removed. The remaining letters are converted to uppercase for
+          consistent analysis.
+
+          The widget tracks how many characters were filtered and displays a warning in the settings panel when
+          non-alphabetic characters are present.
+      </Step>
+      <Step title="Count Letter Frequencies">
+          Each of the 26 letters is counted. Letters that don't appear in the text receive a count of zero.
+      </Step>
+      <Step title="Determine Observed Frequency Order">
+          Letters are arranged from most frequent to least frequent. When two or more letters have the same count,
+          they are ordered alphabetically. This produces a 26-letter string representing the observed frequency order.
+
+          For example, if E appears 50 times, T appears 45 times, and A appears 40 times, the observed order would
+          begin with `ETA...`
+      </Step>
+      <Step title="Compare to English Frequency Order">
+          The standard English letter frequency order is:
+
+          ```
+          ETAOINSRHLDUCMGFYPWBVKXJZQ
+          ```
+
+          For each letter A through Z, the algorithm finds:
+          - The letter's position in the observed order (0-25)
+          - The letter's position in the expected English order (0-25)
+
+          The absolute difference between these two positions is calculated for each letter.
+      </Step>
+      <Step title="Calculate Final Score">
+          The Normor score is the sum of all 26 position differences. A lower score indicates the ciphertext's
+          frequency pattern is closer to normal English.
+
+          ```
+          Normor Score = Σ|observed_position(letter) - expected_position(letter)| for all letters A-Z
+          ```
+      </Step>
+  </Steps>
+
+  ## Score Interpretation
+
+  | Score Range | Likely Cipher Type |
+  |-------------|-------------------|
+  | Below 60 | Near-perfect English frequency match |
+  | 60-99 | Transposition cipher or plaintext |
+  | Around 130 | Key phrase ciphers |
+  | Around 190 | Simple substitution ciphers |
+  | 220 and above | Aristocrat, Patristocrat, Gromark, or Phillips ciphers |
+
+  ## Normor Settings
+
+  ### Display Type
+
+  There are two display options for Normor.
+
+  #### Table
+
+  Shows a summary for each ciphertext including:
+  - The Normor score
+  - An interpretation of what cipher type the score suggests
+  - The total letter count after filtering
+
+  Ciphertexts that had non-alphabetic characters filtered are marked with an asterisk.
+
+  #### Graph
+
+  Displays a bar chart showing the position difference for each letter. The x-axis shows letters arranged in
+  standard English frequency order (E, T, A, O, I, N, S, R, H, L...). The y-axis shows how far each letter's
+  observed position differs from its expected position.
+
+  When analyzing multiple ciphertexts, each is shown as a grouped bar with its assigned color.
+
+  ## Ciphertext Warnings
+
+  When a ciphertext contains non-alphabetic characters, a warning appears in the settings panel. The warning
+  lists each affected ciphertext with:
+  - The ciphertext name and color indicator
+  - The number of non-alphabetic characters that will be filtered
+  - The percentage of the total text those characters represent
+
+  A high percentage of filtered characters often indicates the ciphertext may be binary data rather than text,
+  which can produce misleading results.
+
+  ## Practical Application
+
+  Normor can be leveraged to:
+  - Quickly classify ciphers by family. Transposition ciphers preserve letter frequencies and score low, while
+    substitution ciphers disrupt frequencies and score high.
+  - Detect plaintext. A very low score suggests the text may be unencrypted English or only lightly obscured.
+  - Compare multiple ciphertexts to identify which ones share similar encryption methods.
+
+  ## Caveats
+
+  - **Short texts produce unreliable scores.** With fewer than 100-200 letters, natural variation can significantly
+    skew the frequency order. A short plaintext passage might score higher than expected simply due to unusual word choices.
+  - **Non-English plaintext skews results.** The expected frequency order is based on English. Text encrypted from
+    French, German, or other languages will have different baseline frequencies, making the score less meaningful.
+  - **Data encodings can produce misleading results.** When a Base64 or Hex string decodes to binary data rather
+    than text, some bytes will coincidentally fall in the A-Z range. The widget will analyze these "accidental letters,"
+    producing a score that doesn't reflect meaningful content.
+  - **Polyalphabetic ciphers flatten frequencies.** Ciphers like Vigenère use multiple substitution alphabets, which
+    tends to flatten letter frequencies toward uniformity. These may score differently than simple substitution ciphers
+    despite being in the same family.
+  - **Zero-count letters affect the score.** If a letter doesn't appear in the ciphertext, it still occupies a position
+    in the observed order (sorted alphabetically among other zero-count letters). This can inflate the score for short
+    texts where several letters are missing entirely.
+
+## Further reading
+
+- [Read the paper on Normor](https://www.ackgame.com/Normor%20Revisited.pdf)
