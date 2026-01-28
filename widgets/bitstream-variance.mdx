@@ -1,0 +1,108 @@
+---
+title: 'Bitstream Variance'
+description: 'Bitstream Variance plots the numeric value of n-bit sequences from the ciphertext as a line graph, helping you spot patterns in how the data alternates (e.g. sine-like or repeating structure).'
+icon: 'line-chart'
+---
+
+import DataEncodingDecodeSnippet from '/snippets/data-encoding-decode-step.mdx'
+import DisplayEncodingSnippet from '/snippets/display-encoding-snippet.mdx'
+
+## How it works
+
+<Steps>
+    <Step title="Encoding and byte source">
+        The widget uses the ciphertext’s decoded binary data to calculate bitstream variance. The decoded binary data
+        is calculated based on the encoding of the ciphertext.
+    </Step>
+    <Step title="Ciphertext Settings">
+          Bitstream Variance takes into consideration the settings for each ciphertext. These settings currently include:
+          - Ignore whitespace
+          - Ignore punctuation
+          - Ignore casing
+          - Genericize text
+
+          For data encodings (base64, hex, octal, decimal, etc.) the ciphertext is first decoded to Latin-1 before
+          the toggles are applied.
+    </Step>
+    <Step title="Bytes to bits">
+        The decoded byte array is converted to a single stream of bits, **MSB first** within each byte.
+
+        Example: the byte `0xA5` (165) becomes the bit sequence `1,0,1,0,0,1,0,1`.
+    </Step>
+    <Step title="Bit chunk size">
+        You choose **n** from 1 to 16. Each group of n bits is turned into one plotted value:
+        - **n = 1**: each bit is one value (0 or 1).
+        - **n = 8**: each byte is one value (0–255).
+        - **n = 16**: each pair of bytes is one value (0–65,535).
+
+        The y-axis maximum is **2^n − 1** (e.g. 255 for n=8, 65,535 for n=16).
+    </Step>
+    <Step title="Sliding vs block mode">
+        **Sliding (overlapping):** A window of n bits moves one bit at a time. Consecutive values overlap by n−1 bits. Only full n-bit windows produce a point; the last incomplete window is skipped.
+
+        **Block (non-overlapping):** The bitstream is split into consecutive chunks of n bits. If the last chunk has fewer than n bits, it is **padded** using the remainder setting before being converted to one value.
+    </Step>
+    <Step title="Remainder padding (block mode only)">
+        When the total number of bits is not divisible by n, the last block is shorter than n. You choose how to extend it to n bits before converting to decimal:
+
+        | Setting          | Meaning           | Example (n=4, last bits `10`) |
+        |------------------|-------------------|--------------------------------|
+        | Left pad with 0  | Zeros on the left | `0010` → 2                     |
+        | Right pad with 0 | Zeros on the right| `1000` → 8                     |
+        | Left pad with 1  | Ones on the left  | `1110` → 14                    |
+        | Right pad with 1 | Ones on the right | `1011` → 11                    |
+
+        In sliding mode there is no remainder value; only full windows are plotted.
+    </Step>
+    <Step title="Bits to decimal">
+        Each n-bit chunk is interpreted as an **unsigned integer** in big-endian order (first bit is the most significant).
+
+        Examples (n=4):
+        - `0010` → 2
+        - `1111` → 15
+        - `1010` → 10
+
+        For n=16, `0000000100000001` → 257.
+    </Step>
+    <Step title="Plot the line">
+        The sequence of decimal values is plotted as a **line chart**:
+        - **X-axis:** Index of the value (0, 1, 2, …).
+        - **Y-axis:** Decimal value (0 up to 2^n − 1).
+
+        Each selected ciphertext is one line, colored by its ciphertext color. Multiple ciphertexts are overlaid with a legend.
+    </Step>
+</Steps>
+
+## Bitstream Variance settings
+
+### Bit chunk size (n)
+
+Number of bits per value, from **1 to 16**. Larger n gives fewer points and a larger possible range (up to 65,535 for n=16).
+
+### N-gram mode
+
+- **Sliding:** Overlapping n-bit windows; no remainder.
+- **Block:** Non-overlapping n-bit chunks; remainder is padded using the option below.
+
+### Remainder padding
+
+Used only in **block** mode when the bitstream length is not a multiple of n. Choose how to pad the last, shorter chunk:
+
+- **Left pad with 0** / **Right pad with 0** — pad with zeros.
+- **Left pad with 1** / **Right pad with 1** — pad with ones.
+
+Sliding mode ignores this setting.
+
+## Practical application
+
+Bitstream Variance helps you:
+
+- **See alternating patterns.** Regular up–down movement can suggest periodic structure (e.g. LFSR, repeated key, or sine-like modulation).
+- **Compare ciphertexts.** Overlaying lines for several inputs can show shared or different bit-level structure.
+- **Inspect raw data.** For hex/base64-decoded material, the plot reflects how byte (or multi-byte) values change along the stream, using the ciphertext’s decoded binary data.
+
+## Caveats
+
+- **Sliding vs block change the plot.** Sliding gives more points and overlapping structure; block gives one value per n bits. Use the mode that matches the structure you care about.
+- **Remainder affects only the last value.** In block mode, the padding choice changes only the final point. For long streams the effect is small; for very short ones it can be noticeable.
+- **Large n on short text.** With n=16 and very few bytes, you get only a handful of points, so the line may look flat or sparse.

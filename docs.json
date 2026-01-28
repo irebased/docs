@@ -39,7 +39,8 @@
               "widgets/index-of-coincidence",
               "widgets/ascii-distribution-chart",
               "widgets/shannon-entropy",
-              "widgets/normor"
+              "widgets/normor",
+              "widgets/bitstream-variance"
             ]
           },
           {
