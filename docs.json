@@ -41,7 +41,8 @@
               "widgets/shannon-entropy",
               "widgets/normor",
               "widgets/bitstream-variance",
-              "widgets/expected-bin-occupancy"
+              "widgets/expected-bin-occupancy",
+              "widgets/chi-squared-test"
             ]
           },
           {

@@ -1,0 +1,132 @@
+---
+title: 'Chi-squared Test'
+description: 'The Chi-squared test measures how closely the character or n-gram frequency distribution of a ciphertext matches an expected distribution.'
+icon: 'chart-bar'
+---
+
+## How it works
+
+<Steps>
+    <Step title="Decoding">
+        The Chi-squared test uses decoded ciphertext content. For data encodings (Base64, Hexadecimal, Decimal, etc.), the raw data is first decoded to bytes and then converted to characters.
+    </Step>
+    <Step title="Ciphertext Settings">
+        Chi-squared takes into consideration the settings for each ciphertext, including:
+        - Ignore whitespace
+        - Ignore punctuation
+        - Ignore casing
+        - Genericize text
+
+        These settings are applied before frequency analysis.
+    </Step>
+    <Step title="N-gram Generation">
+        The text is divided into n-grams (character groupings) based on the configured n-gram size:
+        - **Size 1**: Single characters (default)
+        - **Size 2**: Bigrams (pairs of characters)
+        - **Size 3**: Trigrams (triplets of characters)
+        - And so on...
+
+        N-grams can be generated using either:
+        - **Sliding window**: Overlapping n-grams (ABCD → AB, BC, CD)
+        - **Block mode**: Non-overlapping n-grams (ABCD → AB, CD)
+    </Step>
+    <Step title="Frequency Calculation">
+        The frequency of each n-gram is counted. The n-grams analyzed depend on the comparison mode:
+        - **English mode** (n-gram size 1 only): Only alphabetic characters (A-Z) are counted; all other characters are filtered out.
+        - **Ciphertext mode**: All n-grams are counted, including those with letters, numbers, symbols, and whitespace.
+    </Step>
+    <Step title="Chi-squared Calculation">
+        The Chi-squared statistic is calculated using the formula:
+
+        **X² = Σ(Oᵢ - Eᵢ)² / Eᵢ**
+
+        Where:
+        - Oᵢ = Observed count of n-gram i
+        - Eᵢ = Expected count of n-gram i
+
+        The expected count for each n-gram is calculated as: (expected percentage / 100) × total n-gram count
+    </Step>
+</Steps>
+
+## Chi-squared Settings
+
+### Comparison Mode
+
+#### English Frequencies (Default)
+
+Compares the ciphertext against standard English letter frequencies. **Only available for n-gram size 1** (single characters), since we only have reference frequencies for individual letters.
+
+Only alphabetic characters (A-Z) are analyzed; all other characters are filtered out before comparison.
+
+#### Another Ciphertext
+
+Compares the ciphertext against the n-gram frequency distribution of a selected "base" ciphertext. Works with any n-gram size.
+
+After applying the ciphertext settings (ignore whitespace, ignore punctuation, etc.), all remaining n-grams are analyzed.
+
+When this mode is selected, you choose which ciphertext serves as the baseline for comparison.
+
+### N-gram Settings
+
+#### N-gram Size
+
+Controls how many characters are grouped together for frequency analysis:
+- **1** (default): Analyze single character frequencies
+- **2**: Analyze bigram (two-character) frequencies
+- **3**: Analyze trigram (three-character) frequencies
+- **4+**: Analyze larger n-gram frequencies
+
+Larger n-gram sizes can reveal patterns in polyalphabetic ciphers or detect repeated sequences.
+
+**Note**: English frequency comparison is only available for n-gram size 1.
+
+#### N-gram Mode
+
+- **Sliding Window**: Creates overlapping n-grams. For "ABCD" with size 2: AB, BC, CD
+- **Block**: Creates non-overlapping n-grams. For "ABCD" with size 2: AB, CD
+
+Sliding window produces more n-grams and may reveal more patterns, while block mode treats the text as discrete chunks.
+
+### Display Type
+
+#### Table
+
+Shows a summary for each ciphertext including:
+- Chi-squared score
+- Score interpretation
+- Number of n-grams analyzed
+
+#### Graph
+
+Displays a bar chart showing each n-gram's contribution to the overall Chi-squared score:
+- **English mode**: Letters arranged by English frequency (most common to least common)
+- **Ciphertext mode / N-gram mode**: N-grams arranged by observed frequency
+
+## Score Interpretation
+
+| Score Range | Interpretation |
+|-------------|----------------|
+| 0 - 30 | Excellent match |
+| 30 - 50 | Very good match |
+| 50 - 100 | Good match |
+| 100 - 150 | Moderate deviation |
+| 150 - 300 | Significant deviation |
+| 300+ | Very different |
+
+Lower scores indicate that the n-gram frequency distribution more closely matches the expected distribution.
+
+## Practical Application
+
+Chi-squared analysis can be leveraged to:
+- **Identify plaintext**: A Chi-squared score near 0-50 against English frequencies suggests the text may be plaintext or a simple transposition cipher.
+- **Detect substitution ciphers**: Higher scores (100-300) often indicate substitution ciphers.
+- **Analyze polyalphabetic ciphers**: Using bigram or trigram analysis can reveal patterns not visible in single-letter analysis.
+- **Compare ciphertexts**: Use ciphertext comparison mode to determine if two encrypted messages share similar n-gram distributions.
+- **Detect repeated patterns**: Larger n-gram sizes can identify repeated sequences in ciphertexts.
+
+## Caveats
+
+- **English mode** only supports n-gram size 1 (single letters) because we don't have reference frequencies for English bigrams, trigrams, etc.
+- Short ciphertexts may produce unreliable results, especially with larger n-gram sizes.
+- Larger n-gram sizes produce fewer total n-grams, which may reduce statistical significance.
+- When comparing against another ciphertext, ensure the base ciphertext is long enough to provide representative n-gram frequencies.
