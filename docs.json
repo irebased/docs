@@ -40,7 +40,8 @@
               "widgets/ascii-distribution-chart",
               "widgets/shannon-entropy",
               "widgets/normor",
-              "widgets/bitstream-variance"
+              "widgets/bitstream-variance",
+              "widgets/expected-bin-occupancy"
             ]
           },
           {

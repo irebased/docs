@@ -1,0 +1,116 @@
+---
+title: 'Expected Bin Occupancy'
+description: 'Compare observed character frequency distribution against the expected random distribution with statistical confidence bands.'
+icon: 'chart-line'
+---
+
+import DataEncodingDecodeSnippet from '/snippets/data-encoding-decode-step.mdx'
+import DisplayEncodingSnippet from '/snippets/display-encoding-snippet.mdx'
+
+
+## How it works
+
+Expected Bin Occupancy is a statistical analysis tool that compares how characters are distributed in your ciphertext against what would be expected from a purely random distribution. This
+helps identify whether a text exhibits patterns that deviate from randomness.
+
+<Steps>
+    <Step title="Decoding">
+        The widget first decodes the ciphertext content based on its encoding type. Data encodings (Base64, Hex, etc.) are converted to their underlying byte representation, while display
+encodings (UTF-8, ASCII) are processed directly as text.
+    </Step>
+    <Step title="Ciphertext Settings">
+        Before analysis, any ciphertext preprocessing options are applied:
+        - Ignore whitespace
+        - Ignore punctuation
+        - Ignore casing
+        - Genericize text
+
+        These settings affect which characters are included in the frequency count.
+    </Step>
+    <Step title="Frequency Calculation">
+        The widget counts how many times each unique character appears in the processed text. These frequencies are then sorted from highest to lowest, creating a ranked distribution where "Bin
+1" contains the most frequent character, "Bin 2" the second most frequent, and so on.
+    </Step>
+    <Step title="Expected Distribution">
+        Using order statistics, the widget calculates what the expected frequency distribution would be if characters were distributed randomly (like balls thrown randomly into bins). This
+creates the theoretical "expected curve" for comparison.
+    </Step>
+    <Step title="Confidence Bands">
+        Statistical confidence bands are calculated around the expected curve. These bands show the range within which the observed distribution would likely fall if the text were truly random,
+given the selected confidence level.
+    </Step>
+</Steps>
+
+## Understanding the Chart
+
+The chart displays three key elements:
+
+### Observed Distribution (Solid Line)
+This line shows your actual ciphertext's character distribution. Each point represents a "bin" (unique character) ranked by frequency, with the most common character on the left.
+
+### Expected Curve (Dashed Line)
+This dashed line shows what the distribution would theoretically look like for random text of the same length with the same number of unique characters. It serves as a baseline for comparison.
+
+### Confidence Bands (Shaded Area)
+The shaded region around the expected curve represents the statistical confidence interval. If your observed distribution falls within this band, it is statistically consistent with random
+distribution at the selected confidence level.
+
+## Settings
+
+### Ciphertext Selection
+
+Unlike other widgets that can display multiple ciphertexts simultaneously, Expected Bin Occupancy analyzes one ciphertext at a time. This is because overlaying multiple distributions would make
+the comparison against the expected curve difficult to interpret.
+
+### Show Expected Curve
+
+Toggle the display of the theoretical expected distribution curve. When enabled, a dashed blue line shows what random distribution would look like.
+
+### Show Confidence Bands
+
+Toggle the display of the confidence interval bands around the expected curve. When enabled, a shaded area indicates the statistical bounds.
+
+### Confidence Level
+
+Select the width of the confidence bands:
+
+- **68% (1σ)**: Narrowest band. Approximately 68% of random samples would fall within this range.
+- **95% (2σ)**: Medium band (default). Approximately 95% of random samples would fall within this range.
+- **99.7% (3σ)**: Widest band. Approximately 99.7% of random samples would fall within this range.
+
+Higher confidence levels produce wider bands and are more forgiving of deviation from the expected curve.
+
+## Practical Applications
+
+Expected Bin Occupancy analysis can help you:
+
+- **Detect non-random patterns**: If your observed distribution consistently falls outside the confidence bands, the text likely contains structure or patterns inconsistent with random data.
+- **Compare encryption quality**: Well-encrypted data should produce a distribution that closely follows the expected random curve.
+- **Identify substitution ciphers**: Simple substitution ciphers often preserve the frequency distribution of the original language, causing significant deviation from the expected random
+distribution.
+- **Validate randomness**: Test whether data that should be random (keys, nonces, etc.) actually exhibits random-like character distribution.
+
+## Interpreting Results
+
+### Distribution Within Confidence Bands
+If your observed line stays mostly within the shaded confidence region, the character distribution is statistically consistent with randomness. This doesn't prove the text is random, but it
+doesn't show obvious patterns.
+
+### Distribution Outside Confidence Bands
+If the observed line significantly deviates from the confidence bands—especially if it shows a steeper curve (some characters appear much more frequently than others)—the text likely contains
+non-random structure. This is typical of:
+- Natural language text
+- Simple substitution ciphers
+- Encoded but not encrypted data
+
+### Flat vs. Steep Curves
+- **Steeper observed curve**: Some characters dominate while others are rare (typical of natural language)
+- **Flatter observed curve**: Characters are more evenly distributed (closer to random)
+
+## Caveats
+
+- **Single ciphertext only**: This widget analyzes one ciphertext at a time for clarity of comparison.
+- **Sample size matters**: Very short texts may show high variance even if they come from a random source. Longer texts provide more reliable comparisons.
+- **Character set assumptions**: The analysis assumes each unique character represents a distinct "bin." For multi-byte encodings, this may not reflect the underlying data structure accurately.
+- **Statistical interpretation**: Falling within confidence bands suggests consistency with randomness but does not prove randomness. Conversely, falling outside may indicate patterns but could
+also occur by chance with the stated probability.
