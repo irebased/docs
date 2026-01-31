@@ -1,0 +1,143 @@
+---
+title: 'Kasiski Examination'
+description: 'Find repeated sequences in ciphertext to determine the likely key length of polyalphabetic ciphers.'
+icon: 'search'
+---
+
+import DataEncodingDecodeSnippet from '/snippets/data-encoding-decode-step.mdx'
+
+## How it works
+
+The Kasiski examination is a cryptanalysis technique used to attack polyalphabetic substitution ciphers (like the Vigenère cipher) by
+finding repeated sequences and analyzing the distances between them.
+
+<Steps>
+    <Step title="Sequence Detection">
+        The tool scans the ciphertext for repeated character sequences (n-grams) within a configurable length range. Only sequences
+appearing two or more times are considered.
+    </Step>
+    <Step title="Distance Calculation">
+        For each repeated sequence, the distances between consecutive occurrences are calculated. These distances are measured in
+character positions.
+    </Step>
+    <Step title="Factor Analysis">
+        The key insight: if a sequence repeats, the distance between occurrences is likely a multiple of the key length. The tool
+calculates all factors of each distance and counts their frequencies across all repeated sequences.
+    </Step>
+    <Step title="Key Length Estimation">
+        Factors that appear most frequently across all distances are the most likely key lengths. The tool ranks potential key lengths by
+their frequency of occurrence.
+    </Step>
+</Steps>
+
+## Display Modes
+
+### Factor Frequency
+
+A bar chart showing potential key lengths ranked by how often they appear as factors of the distances between repeated sequences.
+
+**How to interpret:**
+- The x-axis shows potential key lengths (factors)
+- The y-axis shows how many times each factor appeared across all distance calculations
+- **Tallest bars = most likely key lengths**
+- Look for a clear winner or a small group of related values (e.g., 5, 10, 15 all being multiples of 5)
+- If multiple bars are similar in height, the key length may be their greatest common divisor
+- The chips at the top highlight the top 3 most likely candidates
+
+### Sequence Table
+
+A detailed table listing each repeated sequence found in the ciphertext.
+
+**How to interpret:**
+- **Sequence**: The exact characters that repeat. Longer sequences are more reliable indicators
+- **Count**: Number of times this sequence appears. Higher counts provide stronger evidence
+- **Positions**: Where in the ciphertext (0-indexed) each occurrence starts
+- **Distances**: The gaps between consecutive occurrences. These are the key values for analysis
+- **Factors**: Common divisors of the distances. Factors appearing across multiple sequences are strong key length candidates
+- Look for sequences where all distances share a common factor—this strongly suggests that factor is the key length
+
+### Text Highlighting
+
+The original ciphertext with repeated sequences color-coded for visual pattern recognition.
+
+**How to interpret:**
+- Each color represents a different repeated sequence
+- The legend shows which sequence each color represents and its occurrence count
+- Hover over highlighted sections to see position details
+- **Evenly spaced highlights** of the same color suggest a consistent key length
+- Clusters of different colors in the same region may indicate a portion of the key that produces common letter combinations
+- Sequences that appear at regular intervals (e.g., every 5th position) strongly indicate that interval as the key length
+
+### Arc Diagram
+
+A visualization where arcs connect positions in the ciphertext where the same sequence appears.
+
+**How to interpret:**
+- The x-axis represents character positions in the ciphertext (0 to text length)
+- Colored dots mark where each repeated sequence occurs
+- Arcs connect consecutive occurrences of the same sequence
+- **Arc height corresponds to distance**—taller arcs mean larger gaps between occurrences
+- Look for arcs of similar heights across different sequences; this suggests those distances share a common factor (the key length)
+- Hover over arcs to see the exact sequence, positions, and distance
+- Multiple short, similar-height arcs often indicate a short key length
+
+### Key Length Analysis
+
+A horizontal bar chart showing relative confidence scores for the top potential key lengths.
+
+**How to interpret:**
+- Each bar represents a potential key length
+- Bar length shows relative confidence as a percentage (longest bar = 100%)
+- **Higher percentages = stronger candidates**
+- This view normalizes the factor frequencies, making it easier to compare relative strengths
+- A key length with 100% confidence that's far ahead of others (e.g., next is 40%) is a strong indicator
+- If multiple key lengths show similar confidence, they may be multiples of each other—the smallest is likely the actual key length
+
+<Info>
+    Note: since 2 is an extremely common factor, the tool does have a bias towards a key
+    length of 2. So keep this in mind.
+</Info>
+
+### Distance Heatmap
+
+A matrix showing the Greatest Common Divisor (GCD) relationships between pairs of distances.
+
+**How to interpret:**
+- Both axes list the unique distances found between repeated sequences
+- Each cell shows the GCD of the two distances (row and column)
+- **Brighter/lighter cells = higher GCD values = stronger common factors**
+- The diagonal always shows each distance's GCD with itself (the distance value)
+- Look for rows or columns with consistently bright cells—those distances share factors with many others
+- A GCD value that appears frequently throughout the matrix is a strong key length candidate
+- Hover over cells to see the exact calculation: GCD(distance₁, distance₂) = value
+
+## Kasiski Settings
+
+### Sequence Length Range
+
+- **Minimum Length**: The shortest sequence to search for (default: 3 characters)
+- **Maximum Length**: The longest sequence to search for (default: 20 characters)
+
+Shorter sequences occur more frequently but may be coincidental. Longer sequences are more reliable indicators but occur less often.
+
+### Max Results
+
+Limits the number of sequences displayed. The tool prioritizes sequences by frequency (most common first) and length (longer sequences
+preferred when counts are equal).
+
+## Practical Application
+
+The Kasiski examination is most effective when:
+- The ciphertext is long enough to contain repeated sequences
+- The cipher uses a repeating key (polyalphabetic substitution)
+- The key length is relatively short compared to the message length
+
+Once a likely key length is determined, the ciphertext can be divided into groups (every Nth character) and each group analyzed
+separately using single-alphabet techniques like frequency analysis.
+
+## Caveats
+
+- Very short ciphertexts may not contain enough repeated sequences for reliable analysis
+- Random coincidental matches can produce false positives, especially with short sequences
+- Modern ciphers and properly implemented encryption are not vulnerable to this technique
+- The analysis assumes the original text has natural language patterns; random or compressed data will not produce meaningful results

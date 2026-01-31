@@ -42,7 +42,8 @@
               "widgets/normor",
               "widgets/bitstream-variance",
               "widgets/expected-bin-occupancy",
-              "widgets/chi-squared-test"
+              "widgets/chi-squared-test",
+              "widgets/kasiski-test"
             ]
           },
           {
