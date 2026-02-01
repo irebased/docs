@@ -1,0 +1,110 @@
+---
+title: 'Levenshtein Distance'
+description: 'Measure the edit distance between two ciphertexts to quantify their similarity.'
+icon: 'code-compare'
+---
+
+## How it works
+
+The Levenshtein Distance widget calculates the minimum number of single-character edits (insertions, deletions, or substitutions)
+required to transform one ciphertext into another. This metric is useful for comparing two ciphertexts and determining how similar or
+different they are.
+
+<Steps>
+    <Step title="Select Ciphertexts">
+        Choose a source ciphertext and a target ciphertext from your available ciphertexts. The widget will compare these two texts
+character by character.
+    </Step>
+    <Step title="Ciphertext Settings">
+        Levenshtein distance takes into consideration the settings for each ciphertext. These settings include:
+        - Ignore whitespace
+        - Ignore punctuation
+        - Ignore casing
+        - Genericize text
+
+        The comparison is performed after these preprocessing options are applied.
+    </Step>
+    <Step title="Distance Calculation">
+        The algorithm computes the minimum edit distance using dynamic programming. For each position in both texts, it determines the
+optimal sequence of operations needed to transform one text into the other.
+    </Step>
+    <Step title="Results Display">
+        The results can be viewed in two modes: Score view shows the numeric distance and similarity percentage, while Visual Diff view
+highlights the specific character differences.
+    </Step>
+</Steps>
+
+## Understanding the Results
+
+### Distance Score
+
+The distance score represents the minimum number of edits required:
+- **0** means the texts are identical
+- Higher numbers indicate more differences between the texts
+
+### Similarity Percentage
+
+The similarity percentage is calculated as:
+
+$$
+\text{Similarity} = \left(1 - \frac{\text{Distance}}{\text{Max Length}}\right) \times 100\%
+$$
+
+Where Max Length is the length of the longer text. This gives you an intuitive percentage:
+- **100%** means identical texts
+- **0%** means completely different texts (every character needs to be changed)
+
+## Levenshtein Distance Settings
+
+### Display Mode
+
+#### Score View
+
+Displays the edit distance as a prominent number along with:
+- Similarity percentage with a color indicator (green for similar, red for different)
+- Character counts for both source and target texts
+- Labels showing which ciphertexts are being compared
+
+#### Visual Diff View
+
+Provides a character-by-character visualization of the differences:
+- **Green background**: Characters that need to be inserted (present in target but not source)
+- **Red background**: Characters that need to be deleted (present in source but not target)
+- **Yellow/Blue highlight**: Characters that need to be substituted (different character in each text)
+- **No highlight**: Matching characters
+
+## Edit Operations
+
+The Levenshtein algorithm considers three types of edits:
+
+| Operation | Description | Example |
+|-----------|-------------|---------|
+| **Insertion** | Add a character | "cat" → "cart" (insert 'r') |
+| **Deletion** | Remove a character | "cart" → "cat" (delete 'r') |
+| **Substitution** | Replace a character | "cat" → "bat" (substitute 'c' with 'b') |
+
+## Practical Applications
+
+Levenshtein distance analysis can be leveraged to:
+- **Detect minor variations**: Find ciphertexts that are nearly identical with small alterations
+- **Identify related texts**: Determine if two ciphertexts may have originated from similar sources
+- **Track modifications**: Understand what changes were made between two versions of encrypted content
+- **Pattern matching**: Locate texts that approximate a known pattern despite small differences
+
+## Interpretation Guide
+
+| Similarity | Interpretation |
+|------------|----------------|
+| 90-100% | Nearly identical - minor differences only |
+| 70-89% | Highly similar - same general content with some changes |
+| 50-69% | Moderately similar - significant overlap exists |
+| 25-49% | Low similarity - mostly different content |
+| 0-24% | Very different - little to no common content |
+
+## Caveats
+
+- **Length sensitivity**: Very different text lengths will naturally result in higher distances due to the number of insertions or
+deletions required.
+- **Position matters**: Two texts with the same characters but in different orders will have a high distance.
+- **Computational limits**: Very long texts may take longer to process due to the nature of the comparison algorithm.
+- **Symmetric metric**: The distance from A to B equals the distance from B to A.
