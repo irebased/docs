@@ -1,0 +1,75 @@
+---
+title: 'Missing Characters'
+description: 'Detect which characters from the expected character set are absent in the
+ciphertext.'
+icon: 'search'
+---
+
+## How it works
+
+The Missing Characters widget analyzes your ciphertext to identify which characters from
+the expected character set are not present. The expected character set depends on the
+encoding type of your ciphertext.
+
+<Steps>
+    <Step title="Determine Character Set">
+        Based on the ciphertext's encoding type, the widget identifies the expected
+character set:
+        - **Text encodings** (UTF-8, ASCII, UTF-16, UTF-32, Latin1): Letters A-Z
+        - **Data encodings**: Characters specific to that encoding format
+    </Step>
+    <Step title="Scan Ciphertext">
+        The widget scans the original ciphertext string, not the decoded bytes, to find
+which characters from the expected set are present.
+    </Step>
+    <Step title="Report Missing">
+        Characters that are not found in the ciphertext are reported as missing.
+Optionally, present characters can also be displayed.
+    </Step>
+</Steps>
+
+## Character Sets by Encoding
+
+### Text Encodings
+
+For text-based encodings (UTF-8, ASCII, UTF-16, UTF-32, Latin1), the widget checks for
+the presence of letters A through Z. The check is case-insensitive, meaning both
+uppercase and lowercase letters count toward the same character.
+
+### Data Encodings
+
+| Encoding | Expected Characters |
+|----------|---------------------|
+| Binary | 0, 1 |
+| Octal | 0, 1, 2, 3, 4, 5, 6, 7 |
+| Decimal | 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 |
+| Hexadecimal | 0-9, A-F (case-insensitive) |
+| Base64 | A-Z, a-z, 0-9, +, / |
+
+## Settings
+
+### Show Present Characters
+
+When enabled, the widget displays both missing characters (in red) and present
+characters (in green). When disabled, only missing characters are shown.
+
+## Practical Applications
+
+The Missing Characters widget can be used to:
+
+- **Identify substitution cipher constraints**: If certain letters never appear in a
+ciphertext, they may have been deliberately avoided or mapped to other symbols
+- **Detect encoding anomalies**: A hexadecimal string missing certain digits may
+indicate a pattern or constraint in the original data
+- **Verify data completeness**: Check if a Base64 or hex dump contains all expected
+characters
+- **Analyze cipher alphabets**: Determine if a cipher uses a reduced alphabet. For example, if one character is missing it may indicate a Playfair cipher that was then rotated, as Playfair traditionally replaces I/J.
+
+## Caveats
+
+- For text encodings, only letters A-Z are checked. Numbers, punctuation, and special
+characters are not included in the analysis
+- For data encodings, the analysis is performed on the encoded string itself, not the
+decoded byte values
+- Whitespace and formatting characters in the original text are ignored when determining
+which encoding characters are present

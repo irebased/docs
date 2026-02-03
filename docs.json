@@ -33,17 +33,33 @@
             ]
           },
           {
-            "group": "Analysis Widgets",
+            "group": "Foundational Widgets",
             "pages": [
               "widgets/frequency-analysis",
               "widgets/index-of-coincidence",
-              "widgets/ascii-distribution-chart",
-              "widgets/shannon-entropy",
-              "widgets/normor",
-              "widgets/bitstream-variance",
-              "widgets/expected-bin-occupancy",
-              "widgets/chi-squared-test",
               "widgets/kasiski-test",
+              "widgets/missing-characters"
+            ]
+          },
+          {
+            "group": "Bitstream Widgets",
+            "pages": [
+              "widgets/ascii-distribution-chart",
+              "widgets/bitstream-variance"
+            ]
+          },
+          {
+            "group": "Randomness Tests",
+            "pages": [
+              "widgets/shannon-entropy",
+              "widgets/expected-bin-occupancy"
+            ]
+          },
+          {
+            "group": "Comparison Widgets",
+            "pages": [
+              "widgets/normor",
+              "widgets/chi-squared-test",
               "widgets/levenshtein-distance",
               "widgets/ks-test"
             ]
@@ -75,7 +91,7 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:irebased@gmail.com"
+        "href": "mailto:support@cipherinspector.com"
       }
     ]
   },
