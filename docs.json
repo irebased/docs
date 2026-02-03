@@ -44,7 +44,8 @@
               "widgets/expected-bin-occupancy",
               "widgets/chi-squared-test",
               "widgets/kasiski-test",
-              "widgets/levenshtein-distance"
+              "widgets/levenshtein-distance",
+              "widgets/ks-test"
             ]
           },
           {

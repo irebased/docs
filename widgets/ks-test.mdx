@@ -1,0 +1,110 @@
+---
+title: 'Kolmogorov-Smirnov Test'
+description: 'The Kolmogorov-Smirnov test measures how closely a ciphertext character distribution matches a reference distribution.'
+icon: 'chart-line'
+---
+
+## How it works
+
+The Kolmogorov-Smirnov (K-S) test is a statistical method that compares two probability distributions by measuring the maximum vertical
+distance between their cumulative distribution functions (CDFs).
+
+<Steps>
+<Step title="Character Frequency Counting">
+    The widget first counts the frequency of each character (or n-gram) in your ciphertext. This creates an observed distribution of
+how often each character appears.
+</Step>
+<Step title="Reference Distribution">
+    A reference distribution is selected based on your comparison mode:
+    - **Uniform**: Equal probability for all observed characters
+    - **English**: Standard English letter frequencies (e.g., E at 12.7%, T at 9.06%)
+    - **Ciphertext**: The character distribution from another ciphertext you select
+</Step>
+<Step title="CDF Construction">
+    Both the observed and reference distributions are converted into cumulative distribution functions. A CDF shows, for each
+character, the total probability of that character and all characters before it.
+</Step>
+<Step title="D-Statistic Calculation">
+    The D-statistic is calculated as the maximum absolute difference between the two CDFs at any point. A smaller D-statistic
+indicates the distributions are more similar.
+</Step>
+<Step title="P-Value Calculation">
+    The p-value represents the probability that the observed difference could occur by chance. Higher p-values suggest the
+distributions match well; lower p-values indicate significant differences.
+</Step>
+</Steps>
+
+## Comparison Modes
+
+### Uniform Distribution
+
+Compares your ciphertext against a uniform distribution where every character has equal probability. This is useful for detecting whether
+encryption has produced evenly distributed output.
+
+### English Frequencies
+
+Compares your ciphertext against standard English letter frequencies. Only alphabetic characters (A-Z) are analyzed. This helps identify
+if text resembles natural English.
+
+### Another Ciphertext
+
+Compares your ciphertext against the character distribution of a selected base ciphertext. Useful for determining if two ciphertexts were
+encrypted using similar methods or share statistical properties.
+
+## Display Modes
+
+### Score View
+
+Displays a table with:
+- **D-statistic**: The maximum difference between CDFs (0 to 1 scale)
+- **P-value**: Statistical significance (color-coded for quick interpretation)
+- **Interpretation**: Human-readable assessment of the result
+- **Sample size**: Number of characters or n-grams analyzed
+
+### CDF Graph View
+
+Displays an interactive chart showing:
+- **Solid lines**: Observed CDF from your ciphertext
+- **Dashed lines**: Expected CDF from the reference distribution
+- **Dotted vertical line**: Location of maximum difference (D-statistic)
+
+## N-gram Settings
+
+### N-gram Size
+
+Instead of analyzing single characters, you can group characters into n-grams:
+- **1**: Single characters (default)
+- **2**: Bigrams (pairs like "TH", "HE")
+- **3**: Trigrams (triplets like "THE", "AND")
+
+Larger n-grams capture patterns in character sequences but require longer texts for meaningful analysis.
+
+### N-gram Mode
+
+- **Sliding Window**: Overlapping n-grams (ABCD → AB, BC, CD)
+- **Block**: Non-overlapping n-grams (ABCD → AB, CD)
+
+## P-Value Interpretation
+
+| P-value Range | Interpretation |
+|---------------|----------------|
+| > 0.10 | Distributions match well |
+| 0.05 - 0.10 | Slight deviation |
+| 0.01 - 0.05 | Significant deviation |
+| < 0.01 | Very different distributions |
+
+## Practical Applications
+
+The Kolmogorov-Smirnov test can be used to:
+- Determine if ciphertext has uniform byte distribution (suggesting strong encryption)
+- Identify if plaintext resembles natural English
+- Compare multiple ciphertexts to detect similar encryption methods
+- Analyze whether a substitution cipher preserves frequency patterns
+
+## Caveats
+
+- English frequency comparison only analyzes alphabetic characters; non-alphabetic characters are filtered out
+- For n-gram sizes greater than 1, English frequency comparison falls back to uniform distribution (no reference English n-gram
+frequencies available)
+- Very short texts may produce unreliable p-values due to small sample sizes
+- The test measures overall distribution similarity, not specific character mappings
