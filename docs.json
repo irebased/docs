@@ -87,14 +87,6 @@
     "light": "/logo/CipherInspectorNavLogoLight.png",
     "dark": "/logo/CipherInspectorNavLogo.png"
   },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:support@cipherinspector.com"
-      }
-    ]
-  },
   "contextual": {
     "options": [
      "copy"
