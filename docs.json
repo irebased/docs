@@ -71,6 +71,17 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Updates",
+            "pages": [
+              "changelog/changelog"
+            ]
+          }
+        ]
       }
     ],
     "global": {

@@ -1,0 +1,235 @@
+---
+title: 'Changelog'
+description: 'Changelog of all updates and changes to CipherInspector.'
+icon: 'list'
+---
+
+# June 17, 2026 update
+
+After several months of operation, CipherInspector is moving to a client-side only model. Enigma has been discontinued alongside the account system due to low adoption.
+
+Going forward, all accounts and their data will be deleted. The website has been updated to no longer include a login page, privacy policy, or support, and the experience has been centered around the playground and solvers tab.
+
+Thanks for supporting CipherInspector.
+
+# February 9, 2026 update
+
+Welcome solvers to the party! Solvers implement client-side processing for running the optimal search pattern for solving various ciphers. The first solver is available now for solving Vigenere ciphers. More on the way soon.
+
+Patched a bug where private dashboards were not showing in the dashbaord after creation.
+
+<Frame>
+  <img src="/images/feb9_26_1.png" alt="Solvers tab with Vigenere solver" />
+</Frame>
+
+# January 29, 2026: CipherInspector 1.0 releasing February 4th!
+
+After several months of development, the full launch of CipherInspector is finally here. Building off the learnings of the prototype "Artemis" dashboard, CipherInspector comes with more widgets, more customization, and more robust architecture to support advanced tooling in the future.
+
+## Widgets
+
+CipherInspector will launch with 12 widgets, all with multiple different views (one of them comes with six different subtools!)
+- Frequency Analysis
+- Index of Coincidence
+- Kasiski Examination
+- Missing Characters
+- ASCII Distribution Chart
+- Bitstream Variance
+- Shannon Entropy
+- Expected Bin Occupancy
+- Normal Order (Normor)
+- Chi-Squared Test
+- Kolmogorov-Smirnov Test
+- Levenshtein Distance
+- Title widget (formatting)
+
+## Ciphertexts
+
+Ciphertexts have seen a complete overhaul. They are stored as bitstreams after being decoded from their specified character encoding. This allows a far more creative interpretation for analysis techniques, going all the way down to the binary. Ciphertexts now support many more encoding options:
+- ASCII
+- latin1
+- UTF-8
+- UTF-16
+- UTF-32
+- Binary
+- Octal
+- Decimal
+- Hexadecimal
+- Base64
+
+In addition to this, ciphertexts have multiple transformations you can apply before analysis:
+- Ignore whitespace
+- Ignore casing
+- Ignore punctuation
+- Genericize
+
+You can also fully customize the color of your ciphertext now, and give it a nickname to easily pick out ciphertexts from an alias instead of the ciphertext itself.
+
+## Meet the Playground
+
+The CipherInspector Playground is the successor to Artemis. It is a free experience with all widgets available for use. You can add any ciphertexts and create whatever dashboard you want!
+
+## CipherInspector: Enigma
+
+Also coming to CipherInspector is an enhanced experience that includes some convenient features:
+- Create dashboards that are saved to your account for access later
+- Create **public** dashboards that you can share with anyone via the share link
+- Bookmark ciphertexts so you can access them and easily add them to any of your dashboards in a couple clicks
+- Copy dashboards you create in the playground into your account and save them
+- Copy any public dashboard into your account so you can modify your own copy and save it
+
+**Note:** If you create a dashboard in the playground and decide you want to save it by upgrading to Enigma, just click the upgrade button from your playground. Once you check out, the playground dashboard will automatically be imported into your account.
+
+## Docs
+
+CipherInspector comes with a suite of docs to explain how everything works. Check out the docs at [docs.cipherinspector.com](https://docs.cipherinspector.com). In addition to this, the formulas used to back all of the widgets will be made into an open source library for better understanding, as well as to assist in building brute force tools.
+
+Explore the full experience February 4th!
+
+# October 12, 2025: CipherInspector 1.0 Announced
+
+CipherInspector is officially in the works! The full version takes feedback from early adopters of Artemis, a prototype build.
+
+## Key features
+
+### Account system
+
+Cipher inspector will now be powered by an accounts system, allowing you to log in using Google (more auth options to come later). This will allow for enhanced customization and easier retention of your dashboards.
+
+### Dashboard storage
+
+Your account can store dashboards! As many as you want, really. If you’re big on puzzles and cryptography, this is a great bit of news. No more saving a bunch of links, just go to your account!
+
+### Public and Private dashboards
+
+Dashboards you create are private by default. Only you can see and access them. If you’d like to share the dashboard, you can make it public for anyone to see via URL. Don’t worry—no one can modify your dashboard even if it’s public. Only you.
+
+### Copy from public
+
+Public dashboards are cool. But you might want to mess with it. Copy from public will be available so you can duplicate someone else’s dashboard and mess with it on your own.
+
+### Shortened links
+
+Finally, the dashboard data isn’t all stored in the URL! Whew. That was a pain. Sharing links will now be manageable.
+
+### More tools
+
+Targeting support for the following widgets:
+- Frequency Analysis
+- ASCII distribution
+- IOC
+- Shannon entropy
+- KS test
+- autocorrelation
+- Chi squared
+- Expected Bin Occupancy
+- and many more!
+
+<Frame>
+  <img src="/images/october12_25_1.png" alt="CipherInspector 1.0 announcement" />
+</Frame>
+
+# May 27, 2025 update
+
+This quality of life update introduces several performance improvements, UI fixes, and features that will help users learn how to use tools they’re unfamiliar with.
+
+- Introduces info modals for all tools to explain how they work and what they are used for.
+- Updated the grid system to have an ultrawide view and no longer restrict desktop to a narrow view. This allows for 16 columns on desktop, 8 on medium displays, and the typical 1 for mobile.
+- Update to the colors on the site. Made the darks a little darker.
+- New logo! How fun.
+- Updated the “About” page with an additional FAQ and a new bio for the website.
+- Improved footer :heart:
+- Introduced a feature that allows you to rename your dashboard. This is saved in the URL! Max title length of 40 characters.
+- Fixed a bug where tabs would not wrap on mobile.
+
+### Stability improvements
+- Dashboards with lots of graphs and tons of data started to lag significantly, and I wanted to address this.
+- Input text is now debounced so that it does not trigger a chart re-render or url regeneration on each keystroke, only when you stop typing.
+- Charts will now display a skeleton placeholder when resizing widgets or the overall browser window to ensure smooth transitions without lag. If you want to see what the chart looks like at certain drag points, you can stop your drag (while keeping your mouse down) to preview the chart.
+
+<Columns cols={2}>
+  <Frame>
+    <img src="/images/may27_25_1.png" alt="May 27, 2025 update screenshot 1" />
+  </Frame>
+  <Frame>
+    <img src="/images/may27_25_2.png" alt="May 27, 2025 update screenshot 2" />
+  </Frame>
+</Columns>
+
+# May 25, 2025 update
+
+Alright another update with some QOL changes + new feature:
+
+### New feature: n-gram frequency analysis and IC
+- Frequency analysis settings have been updated to allow you to provide the n-gram size of 1-10 for evaluation.
+- Also allows evaluating based on sliding window (overlapping n-grams) or block (non-overlapping).
+- Added support for n-gram analysis for Index of Coincidence.
+
+### New Widget: KS Tests
+- The Kolmogorov-Smirnov test is a non-parametric test that tests the hypothesis that two samples are drawn from the same distribution.
+- In this widget, you can test the hypothesis that the distribution of the input text is the same as the distribution of the English language (Theoretical distribution).
+- Your input text is compared to a reference English text, which is 500 words long and encoded in the same encoding as your input text.
+
+### Quality of life changes
+- Added the ability to "hide" and "unhide" texts from the dashboard results without deleting them. This helps when you are evaluating large data sets and need to interact with the chart for them.
+- Updated the UI for changing the settings on any widget with settings. There is now a settings modal which will pop up. This gives a uniform design language across widgets.
+- Fixed a bug that caused user interactions with settings buttons within widgets to trigger the drag/drop functionality, hindering the ability to click buttons in widgets.
+- Ok I know I said in the last one I won't break links anymore but for realsies this time, all the widgets have been updated to follow the same abstraction as the input text, where their inputs are now encoded as an object which is compressed into the link. This means that both components of our application are now fully extensible without ruining backward compatibility (i.e., I can add more settings and metadata to existing tools without fucking with the links in a breaking way). So there, now the links should be working round the clock.
+
+The existing link I provided in the last update actually [still works!](https://tinyurl.com/artemission2) with a caveat that some of the settings for widgets are probably reverted to default. But hey, it's progress! The abstractions are really starting to come together. It's paying dividends for new widgets and extending existing ones.
+
+<Columns cols={2}>
+  <Frame>
+    <img src="/images/may25_25_1.png" alt="May 25, 2025 update screenshot 1" />
+  </Frame>
+  <Frame>
+    <img src="/images/may25_25_2.png" alt="May 25, 2025 update screenshot 2" />
+  </Frame>
+  <Frame>
+    <img src="/images/may25_25_3.png" alt="May 25, 2025 update screenshot 3" />
+  </Frame>
+  <Frame>
+    <img src="/images/may25_25_4.png" alt="May 25, 2025 update screenshot 4" />
+  </Frame>
+</Columns>
+
+# May 24, 2025 update
+
+More Artemis updates today! Since this thing is still sorta getting established, these changes will break any saved links, but it's to enable a ton of possibilities when making new widgets for multi-input support.
+
+- Updates the multi-input UI to be significantly LESS ugly. Before it was this horrible pill design I rushed together to get the thing working. Now, it's an intuitive tab design that looks and feels a lot better.
+- Support for different encodings and ignore options *per input* instead of being a global setting. This was a big feat, and required refactoring every single widget to ensure it would read in inputs. But this sets up a lot of awesome stuff.
+- Shannon Entropy now shows an English baseline entropy and a Random text baseline entropy in each table row. These values are derived based on the encoding set on the text of that row. So if the text is base64, the english baseline is of a base64-encoded string, etc. This is also implemented in the Index of Coincidence widget.
+- ASCII distribution will decode each input text based on its encoding before charting the data, ensuring we are charting the raw bytes of each input.
+- Links now store compressed input *objects* rather than just compressing the input. This means we can now add more metadata to each input while remaining backwards compatible and not break links in the future.
+- Gridlock: new feature that allows you to lock the dashboard so that it doesn't drag around or resize. This actually fixes some annoying stuff that was buggy about the site. Drop downs would bug out on mobile and sometimes desktop, but more importantly it allows you to click on ciphertext in the chart legend to show/hide it from the chart, which was not working before because the drag/drop stuff was interfering with taps on the widgets. Note: This also locks adding and removing widgets. However, it does not lock editing, adding, or removing text.
+- Fixed some light mode display bugs, so now it is actually visually consistent.
+
+Check out [This example dashboard](https://tinyurl.com/artemission2) with TheGiant and a few rev ciphers.
+
+<Columns cols={2}>
+  <Frame>
+    <img src="/images/may24_25_light.png" alt="May 24, 2025 update — light mode" />
+  </Frame>
+  <Frame>
+    <img src="/images/may24_25_dark.png" alt="May 24, 2025 update — dark mode" />
+  </Frame>
+</Columns>
+
+# May 18, 2025 update
+
+- Updated frequency analysis to display the percentage of overall characters instead of the count
+- ASCII distribution to have three settings: input range only, ASCII, and Extended ASCII, to make it esaier to visualize and/or contextualize data.
+- Updated the layout so that it can be up to 4 columns wide for desktop views
+- Added checkboxes to exclude punctuation, whitespace, and casing respectively.
+- Updated widgets to be drag/drop so they can be repositioned. They are also resizable. Positioning and sizing are preserved in the link, so you can share dashboards how you see them.
+- Artemis now allows providing multiple texts for cross-analysis. The max is 5 distinct texts.
+- Some widgets have been slightly modified to support the multi-text functionality. Frequency Standard Distribution, Shannon Entropy Summary, and IOC summary are now displayed as tabular data instead of either a graph or just a large text value.
+
+[here is an example dashboard](https://tinyurl.com/artemission). Unfortunately with comparing very long texts, the data encoded in the url parameters even when compressed results in an extremely long URL (longer than discord's message length limit btw) so I did have to use https://tinyurl.com/ to minify the link before I could share it. YMMV.
+
+Will add more widgets another day
+
+<Frame>
+  <img src="/images/may18_2025.png" alt="May 18, 2025 update" />
+</Frame>
